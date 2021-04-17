@@ -2,8 +2,9 @@ import numpy as np
 
 
 def mse(y, y_pred):
-    ms = 1/2 * np.sum((y - y_pred)**2)
+    ms = 1/2 * np.mean((y - y_pred)**2)
     assert (ms.shape == ())
+    print(ms)
     return ms
 
 
