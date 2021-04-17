@@ -1,5 +1,5 @@
 import numpy as np
-from data_prep import features, targets, features_test, targets_test
+from data_load import features, targets, features_test, targets_test
 
 np.random.seed(21)
 
