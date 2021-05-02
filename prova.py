@@ -18,7 +18,7 @@ x_test = np.linspace(0, 5, 10).reshape(1, -1) # np.array([[0, 0], [0, 1], [1, 0]
 y_test = f(x_test).reshape(1, -1)
 
 hidden = 2
-regression_network = nn.Network(loss=nn.mse, loss_prime=nn.mse_prime, learn_rate=0.005, epochs=500)
+regression_network = nn.Network(loss=nn.mse, loss_prime=nn.mse_prime, epochs=500, learn_rate=0.005)
 # input layer
 regression_network.add_layer(layer.LinearLayer(1, hidden))
 regression_network.add_layer(layer.ActivationLayer())
