@@ -5,6 +5,8 @@ import pandas as pd
 def load_regression_dataset(train_size=0.9):
     data = pd.read_csv('data/X.csv', sep=' ', header=None)
     target = pd.read_csv('data/y.csv', header=None)
+    for c in data.columns:
+        data[c] = (data[c] - data[c].mean()) / data[c].std()
     return split_data(data, target, train_size)
 
 
@@ -12,6 +14,8 @@ def load_housing_dataset(train_size=0.9):
     df = pd.read_fwf('data/housing.data', header=None)
     target = df.iloc[:, -1:]
     data = df.iloc[:, :-1]
+    for c in data.columns:
+        data[c] = (data[c] - data[c].mean()) / data[c].std()
     return split_data(data, target, train_size)
 
 

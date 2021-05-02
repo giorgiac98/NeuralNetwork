@@ -46,10 +46,12 @@ class LinearLayer(Layer):
 
     def __init__(self, input_size, output_size):
         super().__init__()
-        # TODO sistemare: questi sono i wheights per regression, i commentati per classification
-        # self.weights = np.random.normal(scale=1 / input_size ** .5, size=(output_size, input_size))
-        self.weights = np.ones((output_size, input_size)) # np.random.randn(output_size, input_size) * 0.01
-        self.bias = np.zeros((output_size, 1)) #* 0.1
+        # Classification init
+        # self.weights = np.random.normal(scale=1 / input_size ** .5, size=(output_size, input_size)) * 0.1
+        # Regression init
+        # self.weights = np.ones((output_size, input_size)) * 0.1
+        self.weights = np.random.randn(output_size, input_size) * 0.01
+        self.bias = np.zeros((output_size, 1)) # * 0.1
 
     def forward(self, input_data):
         self.input_data = input_data.copy()

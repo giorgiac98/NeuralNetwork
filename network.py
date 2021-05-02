@@ -4,12 +4,10 @@ import numpy as np
 def mse(y, y_pred):
     ms = 1/2 * np.mean((y - y_pred)**2)
     assert (ms.shape == ())
-    print(ms)
     return ms
 
 
 def mse_prime(y, y_pred):
-    # TODO revise
     return y_pred - y
 
 
@@ -27,40 +25,49 @@ def cross_entropy_prime(y, y_pred):
 
 class Network:
 
-    def __init__(self, loss=cross_entropy, loss_prime=cross_entropy_prime, epochs=900, learn_rate=0.005):
+    def __init__(self, loss=cross_entropy, loss_prime=cross_entropy_prime, epochs=500, learn_rate=0.005):
         self.loss = loss
         self.loss_prime = loss_prime
         self.epochs = epochs
         self.learn_rate = learn_rate
         self.layers = []
 
-    def add_hidden_layer(self, hidden_layer):
+    def add_layer(self, hidden_layer):
         self.layers.append(hidden_layer)
 
-    def fit(self, x_train, y_train):
+    def fit(self, x_train, y_train, batch_size=None):
         losses = []
         last_loss = None
+        indices = np.arange(x_train.shape[1])
+        if batch_size is None:
+            batch_size = x_train.shape[1]
 
         for e in range(self.epochs):
-            # forward pass
-            output = x_train.copy()
-            for lay in self.layers:
-                output = lay.forward(output)
+            np.random.shuffle(indices)
+            batches = [indices[e - batch_size:e] for e in range(batch_size, x_train.shape[1] + 1, batch_size)]
+            loss = 0
 
-            loss = self.loss(y_train, output)
-            losses.append(loss)
+            for batch in batches:
+                # forward pass
+                output = x_train.copy()[:, batch]
+                for lay in self.layers:
+                    output = lay.forward(output)
 
+                loss += self.loss(y_train[:, batch], output)
+
+                # backward pass
+                output_error = self.loss_prime(y_train[:, batch], output)
+                for lay in reversed(self.layers):
+                    output_error = lay.backward(output_error, learn_rate=self.learn_rate)
+
+            loss /= len(batches)
             if e % (self.epochs / 10) == 0:
                 if last_loss and last_loss < loss:
                     print("Train loss: ", loss, "  WARNING - Loss Increasing")
                 else:
                     print("Train loss: ", loss)
                 last_loss = loss
-
-            # backward pass
-            output_error = self.loss_prime(y_train, output)
-            for lay in reversed(self.layers):
-                output_error = lay.backward(output_error, learn_rate=self.learn_rate)
+            losses.append(loss)
 
         return losses
 
