@@ -35,7 +35,7 @@ class Network:
     def add_layer(self, hidden_layer):
         self.layers.append(hidden_layer)
 
-    def fit(self, x_train, y_train, batch_size=None):
+    def fit(self, x_train, y_train, batch_size=None, momentum=0.0):
         losses = []
         last_loss = None
         indices = np.arange(x_train.shape[1])
@@ -59,7 +59,7 @@ class Network:
                 # backward pass
                 output_error = self.loss_prime(y_train[:, batch], output)
                 for lay in reversed(self.layers):
-                    output_error = lay.backward(output_error, learn_rate=self.learn_rate)
+                    output_error = lay.backward(output_error, learn_rate=self.learn_rate, momentum=momentum)
 
             loss /= len(batches)
             if e % (self.epochs / 10) == 0:

@@ -50,8 +50,10 @@ class LinearLayer(Layer):
         # self.weights = np.random.normal(scale=1 / input_size ** .5, size=(output_size, input_size)) * 0.1
         # Regression init
         # self.weights = np.ones((output_size, input_size)) * 0.1
-        self.weights = np.random.randn(output_size, input_size) * 0.01
+        self.weights = np.random.randn(output_size, input_size) * 0.1
         self.bias = np.zeros((output_size, 1)) # * 0.1
+        self.prev_del_weights = np.zeros((output_size, input_size))
+        self.prev_del_bias = np.zeros((output_size, 1))
 
     def forward(self, input_data):
         self.input_data = input_data.copy()
@@ -62,6 +64,7 @@ class LinearLayer(Layer):
 
     def backward(self, output_error, **kwargs):
         learn_rate = kwargs['learn_rate']
+        momentum = kwargs['momentum']
         m = self.input_data.shape[1]
 
         weights_error = 1/m * output_error.dot(self.input_data.T)
@@ -72,8 +75,14 @@ class LinearLayer(Layer):
         assert (weights_error.shape == self.weights.shape)
         assert (bias_error.shape == self.bias.shape)
 
-        self.weights -= learn_rate * weights_error
-        self.bias -= learn_rate * bias_error
+        del_weights = learn_rate * weights_error + momentum * self.prev_del_weights
+        del_bias = learn_rate * bias_error + momentum * self.prev_del_bias
+
+        self.weights -= del_weights
+        self.bias -= del_bias
+
+        self.prev_del_weights = del_weights
+        self.prev_del_bias = del_bias
         return input_error
 
 
