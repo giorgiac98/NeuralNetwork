@@ -19,7 +19,7 @@ for _ in range(0):
 model.add_layer(layer.LinearLayer(hidden, 1))
 # model.add_hidden_layer(layer.ActivationLayer())
 
-losses = model.fit(features, targets, batch_size=256)
+losses = model.fit(features, targets, batch_size=128)
 predictions, model_loss = model.predict(features_test)
 print("Test loss: ", model_loss(targets_test, predictions))
 print(targets_test, predictions)

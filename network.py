@@ -44,7 +44,8 @@ class Network:
 
         for e in range(self.epochs):
             np.random.shuffle(indices)
-            batches = [indices[e - batch_size:e] for e in range(batch_size, x_train.shape[1] + 1, batch_size)]
+            batches = [indices[e - batch_size:e] for e in range(batch_size, x_train.shape[1], batch_size)]
+            batches.append(indices[-(x_train.shape[1] % batch_size):])
             loss = 0
 
             for batch in batches:
