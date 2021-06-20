@@ -1,6 +1,6 @@
 import numpy as np
 import pandas as pd
-
+import sklearn.datasets as skds
 
 def load_regression_dataset(train_size=0.9):
     data = pd.read_csv('data/X.csv', sep=' ', header=None)
@@ -39,6 +39,19 @@ def load_admission_dataset(train_size=0.9):
     return split_data(data, target, train_size)
 
 
+def load_heart_failure_dataset(train_size=0.9):
+    df = pd.read_csv('data/heart_failure_clinical_records_dataset.csv')
+    target = df['DEATH_EVENT']
+    data = df.drop('DEATH_EVENT', axis=1)
+
+    return split_data(data, target, train_size)
+
+
+def load_mnist(train_size=0.9):
+    data, target = skds.load_digits(return_X_y=True, as_frame=True)
+    return split_data(data, target, train_size)
+
+
 def split_data(data, target, train_size):
     sample = np.random.choice(data.index, size=int(len(data) * train_size), replace=False)
     features = data.iloc[sample].to_numpy().T
@@ -46,3 +59,6 @@ def split_data(data, target, train_size):
     targets = target.iloc[sample].to_numpy().reshape(1, -1)
     targets_test = target.drop(sample).to_numpy().reshape(1, -1)
     return features, features_test, targets, targets_test
+
+
+# TODO see https://www.kaggle.com/sohommajumder21/neural-network-93-accuracy-no-complex-codes/notebook

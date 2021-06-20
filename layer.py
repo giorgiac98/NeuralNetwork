@@ -30,7 +30,6 @@ def sigmoid_prime(output_error, input_data):
 
 
 class Layer(ABC):
-    # TODO implementare callable style
     def __init__(self):
         self.input_data = None
         self.output = None
@@ -51,7 +50,7 @@ class LinearLayer(Layer):
         # Regression init
         # self.weights = np.ones((output_size, input_size)) * 0.1
         self.weights = np.random.randn(output_size, input_size) * 0.1
-        self.bias = np.zeros((output_size, 1)) # * 0.1
+        self.bias = np.ones((output_size, 1)) * 0.1
         self.prev_del_weights = np.zeros((output_size, input_size))
         self.prev_del_bias = np.zeros((output_size, 1))
 
