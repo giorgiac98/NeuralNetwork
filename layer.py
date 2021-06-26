@@ -34,6 +34,9 @@ class Layer(ABC):
         self.input_data = None
         self.output = None
 
+    def get_weights(self):
+        return np.zeros(1)
+
     def forward(self, inputs):
         raise NotImplementedError
 
@@ -45,14 +48,13 @@ class LinearLayer(Layer):
 
     def __init__(self, input_size, output_size):
         super().__init__()
-        # Classification init
-        # self.weights = np.random.normal(scale=1 / input_size ** .5, size=(output_size, input_size)) * 0.1
-        # Regression init
-        # self.weights = np.ones((output_size, input_size)) * 0.1
         self.weights = np.random.randn(output_size, input_size) * 0.1
         self.bias = np.zeros((output_size, 1))
         self.prev_del_weights = np.zeros((output_size, input_size))
         self.prev_del_bias = np.zeros((output_size, 1))
+
+    def get_weights(self):
+        return self.weights.copy()
 
     def forward(self, input_data):
         self.input_data = input_data.copy()
@@ -64,9 +66,10 @@ class LinearLayer(Layer):
     def backward(self, output_error, **kwargs):
         learn_rate = kwargs['learn_rate']
         momentum = kwargs['momentum']
+        l2_lambda = kwargs['l2_lambda']
         m = self.input_data.shape[1]
 
-        weights_error = 1/m * output_error.dot(self.input_data.T)
+        weights_error = 1/m * output_error.dot(self.input_data.T) + (l2_lambda/m) * self.weights
         bias_error = 1/m * output_error.sum(axis=1, keepdims=True)
         input_error = self.weights.T.dot(output_error)
 
