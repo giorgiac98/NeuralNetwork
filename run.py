@@ -9,7 +9,7 @@ features, features_test, targets, targets_test = dl.load_prepared_data(0.8)
 
 n_features, n_records = features.shape
 hidden = n_features * 20
-model = nn.Network(epochs=300, learn_rate=0.0005, l2_lambda=1e-5)
+model = nn.Network(epochs=100, learn_rate=0.001, l2_lambda=1e-5)
 # input layer
 model.add_layer(layer.LinearLayer(n_features, hidden))
 model.add_layer(layer.ActivationLayer(activation='relu'))

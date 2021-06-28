@@ -1,7 +1,7 @@
 import numpy as np
 from abc import ABC
 
-# np.random.seed(21)
+np.random.seed(48)
 
 
 def sigmoid(x):
@@ -13,20 +13,17 @@ def relu(x):
 
 
 def relu_prime(output_error, input_data):
-    Z = input_data
-    dZ = np.array(output_error, copy=True)
-    # When z <= 0, you should set dz to 0 as well.
-    dZ[Z <= 0] = 0
-    assert (dZ.shape == Z.shape)
-    return dZ
+    derivative = np.array(output_error, copy=True)
+    derivative[input_data <= 0] = 0
+    assert (derivative.shape == input_data.shape)
+    return derivative
 
 
 def sigmoid_prime(output_error, input_data):
-    Z = input_data
-    s = 1 / (1 + np.exp(-Z))
-    dZ = output_error * s * (1 - s)
-    assert (dZ.shape == Z.shape)
-    return dZ
+    s = sigmoid(input_data)
+    derivative = output_error * s * (1 - s)
+    assert (derivative.shape == input_data.shape)
+    return derivative
 
 
 class Layer(ABC):

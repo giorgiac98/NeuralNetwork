@@ -28,7 +28,6 @@ def cross_entropy_prime(y, y_pred):
     return - (np.divide(y, y_pred) - np.divide(1 - y, 1 - y_pred))
 
 
-# TODO implement l2 regularization https://neuraspike.com/blog/l2-regularization-with-python/
 class Network:
 
     def __init__(self, loss=cross_entropy, loss_prime=cross_entropy_prime, epochs=500, learn_rate=0.005, l2_lambda=0.0):

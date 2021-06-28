@@ -1,11 +1,11 @@
 import numpy as np
 import pandas as pd
 
-from sklearn.impute import SimpleImputer
-from sklearn.preprocessing import LabelEncoder
-from sklearn.utils import resample, shuffle
-from sklearn.feature_selection import SelectKBest
-from sklearn.feature_selection import f_classif
+# from sklearn.impute import SimpleImputer
+# from sklearn.preprocessing import LabelEncoder
+# from sklearn.utils import resample, shuffle
+# from sklearn.feature_selection import SelectKBest
+# from sklearn.feature_selection import f_classif
 
 
 def split_data(data, target, train_size):
@@ -17,6 +17,7 @@ def split_data(data, target, train_size):
     return features, features_test, targets, targets_test
 
 
+''' 
 def data_preparation(save=True):
 
     df = pd.read_csv('data/weatherAUS.csv')
@@ -75,6 +76,7 @@ def data_preparation(save=True):
     if save:
         data.to_csv('data/prep_weatherAUS.csv', index=False)
     return data
+'''
 
 
 def load_prepared_data(train_size=0.9):
